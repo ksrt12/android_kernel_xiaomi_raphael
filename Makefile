@@ -434,6 +434,13 @@ ifeq ($(CONFIG_EARLY_INIT),true)
 KBUILD_CFLAGS    += -DCONFIG_EARLY_SERVICES
 endif
 
+KBUILD_CFLAGS    += -march=armv8.2-a+simd+crypto -munaligned-access -marm
+ifeq ($(cc-name),clang)
+KBUILD_CFLAGS    += -mcpu=cortex-a76 -fvectorize -fslp-vectorize -ftree-vectorize -ftree-slp-vectorize -funsafe-math-optimizations
+else
+KBUILD_CFLAGS    += -mcpu=cortex-a76.cortex-a55 -mtune=cortex-a76.cortex-a55
+endif
+
 KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
